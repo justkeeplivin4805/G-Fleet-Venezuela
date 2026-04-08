@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenerFleets · Venezuela Fleet Supply — Operating Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f6f3;
+    --bg3: #f0ede8;
+    --text: #1a1a18;
+    --text2: #5f5e5a;
+    --text3: #888780;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --green-bg: #EAF3DE;
+    --green-bg-light: rgba(234,243,222,0.3);
+    --green-text: #3B6D11;
+    --green-border: #C0DD97;
+    --blue-bg: #E6F1FB;
+    --blue-bg-light: rgba(230,241,251,0.3);
+    --blue-text: #185FA5;
+    --blue-border: #85B7EB;
+    --purple-bg: #EEEDFE;
+    --purple-bg-light: rgba(238,237,254,0.3);
+    --purple-text: #534AB7;
+    --purple-border: #AFA9EC;
+    --amber-bg: #FAEEDA;
+    --amber-bg-light: rgba(250,238,218,0.3);
+    --amber-text: #854F0B;
+    --amber-border: #FAC775;
+    --teal-bg: #E1F5EE;
+    --teal-text: #0F6E56;
+    --teal-border: #9FE1CB;
+    --red-bg: #FCEBEB;
+    --red-text: #A32D2D;
+    --info-text: #185FA5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c;
+      --bg2: #2a2a27;
+      --bg3: #333330;
+      --text: #e8e6df;
+      --text2: #a8a69e;
+      --text3: #6e6d67;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.2);
+      --green-bg: #27500A;
+      --green-bg-light: rgba(39,80,10,0.25);
+      --green-text: #C0DD97;
+      --green-border: #3B6D11;
+      --blue-bg: #0C447C;
+      --blue-bg-light: rgba(12,68,124,0.25);
+      --blue-text: #85B7EB;
+      --blue-border: #185FA5;
+      --purple-bg: #3C3489;
+      --purple-bg-light: rgba(60,52,137,0.25);
+      --purple-text: #AFA9EC;
+      --purple-border: #534AB7;
+      --amber-bg: #633806;
+      --amber-bg-light: rgba(99,56,6,0.25);
+      --amber-text: #FAC775;
+      --amber-border: #854F0B;
+      --teal-bg: #085041;
+      --teal-text: #9FE1CB;
+      --teal-border: #0F6E56;
+      --red-bg: #501313;
+      --red-text: #F09595;
+      --info-text: #85B7EB;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+  .page-header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 0.5px solid var(--border2);
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--green-bg);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; color: var(--green-text);
+  }
+  .page-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .page-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+  .meta-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .meta-pill {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    border: 0.5px solid var(--border2);
+    color: var(--text2);
+    background: var(--bg2);
+  }
+  /* NAV */
+  .nav {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    background: var(--bg2);
+    padding: 8px;
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border);
+  }
+  .nb {
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 400;
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+  }
+  .nb:hover { background: var(--bg); color: var(--text); }
+  .nb.on {
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  /* SECTIONS */
+  .sec { display: none; }
+  .sec.vis { display: block; }
+  /* CONTENT CARD */
+  .content-card {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  /* SECTION LABEL */
+  .sl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+  /* METRIC ROW */
+  .mrow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .mc {
+    background: var(--bg2);
+    border-radius: var(--radius-md);
+    padding: 13px 14px;
+    border: 0.5px solid var(--border);
+  }
+  .mc .ml { font-size: 11px; color: var(--text2); margin-bottom: 5px; }
+  .mc .mv { font-size: 20px; font-weight: 600; color: var(--text); }
+  .mc .ms { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  /* NOTICE BOXES */
+  .nbox {
+    border-radius: var(--radius-md);
+    padding: 11px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .ng { background: var(--green-bg-light); border: 0.5px solid var(--green-border); color: var(--text2); }
+  .na { background: var(--amber-bg-light); border: 0.5px solid var(--amber-border); color: var(--text2); }
+  .nb3 { background: var(--blue-bg-light); border: 0.5px solid var(--blue-border); color: var(--text2); }
+  .np { background: var(--purple-bg-light); border: 0.5px solid var(--purple-border); color: var(--text2); }
+  .nt { background: rgba(225,245,238,0.3); border: 0.5px solid var(--teal-border); color: var(--text2); }
+  .nbox strong { color: var(--text); }
+  /* INLINE LABELS */
+  .il {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-weight: 500;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .lg { background: var(--green-bg); color: var(--green-text); }
+  .lb { background: var(--blue-bg); color: var(--blue-text); }
+  .lp { background: var(--purple-bg); color: var(--purple-text); }
+  .la { background: var(--amber-bg); color: var(--amber-text); }
+  .lt { background: var(--teal-bg); color: var(--teal-text); }
+  .ll { background: var(--bg2); color: var(--text2); border: 0.5px solid var(--border2); }
+  /* DIVIDER */
+  .div { border: none; border-top: 0.5px solid var(--border); margin: 18px 0; }
+  /* TWO COL */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  /* LIST ITEMS */
+  .oi {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 7px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .oi:last-child { border-bottom: none; }
+  .od {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .dg { background: #639922; }
+  .db { background: #378ADD; }
+  .da { background: #BA7517; }
+  .dp { background: #7F77DD; }
+  .dt { background: #1D9E75; }
+  .ot { font-size: 13px; color: var(--text); line-height: 1.5; flex: 1; }
+  .oc { font-size: 12px; color: var(--text2); white-space: nowrap; margin-left: 8px; }
+  /* ARCHITECTURE ROW */
+  .arch-row {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0,1fr));
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .arch-step {
+    padding: 12px 9px;
+    text-align: center;
+    border-right: 0.5px solid var(--border);
+  }
+  .arch-step:last-child { border-right: none; }
+  .arch-step .an { font-size: 10px; margin-bottom: 3px; }
+  .arch-step .at { font-size: 12px; font-weight: 500; }
+  .arch-step .as { font-size: 11px; color: var(--text2); margin-top: 3px; line-height: 1.3; }
+  .arch-gf { background: var(--green-bg-light); }
+  .arch-gf .an { color: var(--green-text); }
+  .arch-gf .at { color: var(--green-text); }
+  .arch-eco { background: var(--purple-bg-light); }
+  .arch-eco .an { color: var(--purple-text); }
+  .arch-eco .at { color: var(--purple-text); }
+  .arch-fid { background: var(--blue-bg-light); }
+  .arch-fid .an { color: var(--blue-text); }
+  .arch-fid .at { color: var(--blue-text); }
+  /* CATEGORY TABLE */
+  .catrow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .cath {
+    background: var(--bg2);
+    padding: 8px 11px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .catd {
+    padding: 9px 11px;
+    font-size: 13px;
+    color: var(--text);
+    border-right: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .catd:last-child { border-right: none; }
+  .catrow:last-child .catd { border-bottom: none; }
+  .catd.nm { font-weight: 500; }
+  .catd.tot { font-weight: 600; background: var(--green-bg-light); color: var(--green-text); }
+  /* TABLES */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+  .tbl th {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 0.5px solid var(--border2);
+    background: var(--bg2);
+  }
+  .tbl th:not(:first-child) { text-align: right; }
+  .tbl td {
+    padding: 8px 10px;
+    color: var(--text);
+    border-bottom: 0.5px solid var(--border);
+    word-break: break-word;
+  }
+  .tbl td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  .tbl .tr td { font-weight: 600; background: var(--bg2); }
+  .tbl .sr td { font-size: 12px; color: var(--text2); padding-left: 20px; }
+  .tbl .hr td { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; padding-top: 14px; border-bottom: none; font-weight: 600; }
+  .tbl .tot td { font-weight: 600; background: var(--green-bg-light); color: var(--green-text); }
+  .tbl .up td { font-weight: 600; background: var(--amber-bg-light); color: var(--amber-text); }
+  /* CAT TABS */
+  .cat-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .nb2 {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text2);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .12s;
+  }
+  .nb2:hover { background: var(--bg); color: var(--text); }
+  .nb2.on { background: var(--bg); color: var(--text); font-weight: 500; border-color: var(--border2); }
+  /* PHASE BLOCKS */
+  .ph-block {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .ph {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    background: var(--bg2);
+    border-bottom: 0.5px solid var(--border);
+    user-select: none;
+  }
+  .ph:hover { background: var(--bg3); }
+  .ph .arrow {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text3);
+    transition: transform .2s;
+  }
+  .ph.open-ph .arrow { transform: rotate(90deg); }
+  .pbadge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+  .b1 { background: var(--green-bg); color: var(--green-text); }
+  .b2 { background: var(--blue-bg); color: var(--blue-text); }
+  .b3 { background: var(--purple-bg); color: var(--purple-text); }
+  .ptitle { font-size: 14px; font-weight: 500; color: var(--text); }
+  .pmeta { font-size: 12px; color: var(--text2); white-space: nowrap; }
+  .pb { padding: 16px; display: none; }
+  .pb.open { display: block; }
+  .og { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .ogt { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em; }
+  /* RISK ITEMS */
+  .ri {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 10px;
+    background: var(--bg);
+  }
+  .rs {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .rh { background: var(--red-bg); color: var(--red-text); }
+  .rm { background: var(--amber-bg); color: var(--amber-text); }
+  .rl { background: var(--green-bg); color: var(--green-text); }
+  .rn { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .rd { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .rhe { font-size: 12px; color: var(--info-text); margin-top: 6px; line-height: 1.5; }
+  /* PEOPLE CARDS */
+  .pcard {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    background: var(--bg);
+  }
+  .phead {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .av {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .av-pb { background: var(--blue-bg); color: var(--blue-text); }
+  .av-mm { background: var(--green-bg); color: var(--green-text); }
+  .av-ms { background: var(--purple-bg); color: var(--purple-text); }
+  .av-kn { background: var(--amber-bg); color: var(--amber-text); }
+  .av-mk { background: var(--teal-bg); color: var(--teal-text); }
+  .av-fc { background: #FAECE7; color: #993C1D; }
+  .pname { font-size: 15px; font-weight: 500; color: var(--text); }
+  .ptit { font-size: 12px; color: var(--text2); margin-top: 2px; margin-bottom: 6px; }
+  .pbody { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  /* PORT CARD */
+  .port-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 14px;
+    background: var(--bg);
+  }
+  .port-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
+  /* FOOTER */
+  .footer {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 0.5px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .mrow { grid-template-columns: repeat(2, 1fr); }
+    .two { grid-template-columns: 1fr; }
+    .og { grid-template-columns: 1fr; }
+    .arch-row { grid-template-columns: repeat(3, 1fr); }
+    .catrow { grid-template-columns: 1fr 1fr; }
+    .page-wrap { padding: 16px 14px 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="logo-row">
+    <div class="logo-mark">GF</div>
+    <div>
+      <div class="page-title">GreenerFleets · Venezuela Fleet Supply</div>
+      <div class="page-sub">Operating Model — Internal Working Document</div>
+    </div>
+  </div>
+  <div class="meta-row">
+    <span class="meta-pill">$250M target · 50% market capture</span>
+    <span class="meta-pill">48 months · Summer 2026 – Summer 2030</span>
+    <span class="meta-pill">Cummins-first platform</span>
+    <span class="meta-pill">Stops at the port lot</span>
+    <span class="meta-pill">Fiducia Capital partnership</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nb on" onclick="show('overview')">Overview</button>
+  <button class="nb" onclick="show('people')">People & roles</button>
+  <button class="nb" onclick="show('coststack')">Cost stack & margin</button>
+  <button class="nb" onclick="show('capital')">Capital & float</button>
+  <button class="nb" onclick="show('proforma')">Pro forma</button>
+  <button class="nb" onclick="show('ops')">Operations</button>
+  <button class="nb" onclick="show('ports')">Port relationships</button>
+  <button class="nb" onclick="show('risks')">Risks & hedges</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="s-overview" class="sec vis">
+  <div class="nbox na"><strong>Context:</strong> The larger Venezuela rebuild project is still taking shape. Parker was brought into the project by Mathew Sanford. Multiple parties are working on different aspects — Sanford on OFAC compliance technology, Mike on government access, Knut on O&G relationships, Fiducia on in-country capital. Parker and Matt Meehan identified the truck supply and program administration lane as where GreenerFleets can deliver the most value. This model defines that lane precisely.</div>
+
+  <div class="sl">48-month target — recalibrated from $500M market appetite</div>
+  <div class="mrow">
+    <div class="mc"><div class="ml">Total market appetite</div><div class="mv">$500M</div><div class="ms">Venezuela · all categories</div></div>
+    <div class="mc"><div class="ml">GF target (50% share)</div><div class="mv">$250M</div><div class="ms">assets delivered to port lot</div></div>
+    <div class="mc"><div class="ml">Timeline</div><div class="mv">48 mo</div><div class="ms">Summer 2026 – Summer 2030</div></div>
+    <div class="mc"><div class="ml">Blended units (est.)</div><div class="mv">~3,120</div><div class="ms">@ $76K blended avg cost</div></div>
+  </div>
+
+  <div class="sl">Transaction architecture — GF's lane</div>
+  <div class="arch-row">
+    <div class="arch-step arch-gf"><div class="an">01 · GF</div><div class="at">Program design</div><div class="as">Rules · fleet qualification · demand pipeline</div></div>
+    <div class="arch-step arch-gf"><div class="an">02 · GF</div><div class="at">Procurement</div><div class="as">Cummins-first · source · audit · buy</div></div>
+    <div class="arch-step arch-gf"><div class="an">03 · GF</div><div class="at">Upfit & prep</div><div class="as">Telematics · inspection · spec compliance</div></div>
+    <div class="arch-step arch-eco"><div class="an">04 · Ecosystem</div><div class="at">OFAC / GL-52</div><div class="as">Sanford's platform · GF interfaces with it</div></div>
+    <div class="arch-step arch-gf"><div class="an">05 · GF</div><div class="at">Port lot handoff</div><div class="as">Staged at AIT · docs complete · Fiducia pays</div></div>
+    <div class="arch-step arch-fid"><div class="an">06 · Fiducia</div><div class="at">In-country</div><div class="as">Shipping · customs · finance to operators</div></div>
+  </div>
+
+  <div style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; font-size:12px; align-items:center;">
+    <span><span class="il lg">GF owns</span> Steps 1–3, 5</span>
+    <span><span class="il lp">Sanford / ecosystem</span> Step 4 · GF interfaces</span>
+    <span><span class="il lb">Fiducia</span> Step 6 + in-country</span>
+    <span><span class="il la">Mike / Knut</span> Gov access · O&G demand · shipping lane TBD</span>
+  </div>
+
+  <div class="sl">Category mix — light duty skew applied</div>
+  <div class="catrow">
+    <div class="cath">Category</div><div class="cath" style="text-align:right;">Units</div><div class="cath" style="text-align:right;">Asset $</div><div class="cath" style="text-align:right;">Avg cost</div><div class="cath" style="text-align:right;">Mix %</div>
+    <div class="catd nm">Cat 1 · Light duty O&G pickup</div><div class="catd" style="text-align:right;">780</div><div class="catd" style="text-align:right;">$35.1M</div><div class="catd" style="text-align:right;">$45K</div><div class="catd" style="text-align:right;">14%</div>
+    <div class="catd nm">Cat 2 · Medium duty O&G 4x4</div><div class="catd" style="text-align:right;">420</div><div class="catd" style="text-align:right;">$27.3M</div><div class="catd" style="text-align:right;">$65K</div><div class="catd" style="text-align:right;">11%</div>
+    <div class="catd nm">Cat 3 · Agri medium duty</div><div class="catd" style="text-align:right;">870</div><div class="catd" style="text-align:right;">$55.7M</div><div class="catd" style="text-align:right;">$64K</div><div class="catd" style="text-align:right;">22%</div>
+    <div class="catd nm">Cat 4 · Agri heavy straight</div><div class="catd" style="text-align:right;">620</div><div class="catd" style="text-align:right;">$54.6M</div><div class="catd" style="text-align:right;">$88K</div><div class="catd" style="text-align:right;">22%</div>
+    <div class="catd nm">Cat 5 · Class 8 tractor</div><div class="catd" style="text-align:right;">430</div><div class="catd" style="text-align:right;">$46.2M</div><div class="catd" style="text-align:right;">$107K</div><div class="catd" style="text-align:right;">18%</div>
+    <div class="catd nm" style="background:var(--bg2);">Parts pre-position (Dieselval)</div><div class="catd tot" style="text-align:right;">—</div><div class="catd tot" style="text-align:right;">$18.5M</div><div class="catd tot" style="text-align:right;">—</div><div class="catd tot" style="text-align:right;">7%</div>
+    <div class="catd" style="font-weight:600; background:var(--green-bg-light); color:var(--green-text);">Total</div><div class="catd tot" style="text-align:right; font-weight:600;">3,120</div><div class="catd tot" style="text-align:right; font-weight:600;">$237M</div><div class="catd tot" style="text-align:right; font-weight:600;">$76K</div><div class="catd tot" style="text-align:right; font-weight:600;">~95%</div>
+  </div>
+  <div class="nbox na" style="margin-top:4px;">Parts pre-position ($18.5M) is funded by Fiducia and managed through Dieselval — a relationship asset for GreenerFleets, not a GF capital outlay. The remaining ~5% of $250M provides buffer for cost overruns, loss provisions, and opportunistic fills.</div>
+
+  <div class="sl">Who pays GF — and for what</div>
+  <div class="two">
+    <div>
+      <div class="oi"><div class="od dg"></div><div class="ot"><strong>Fiducia Capital</strong> pays GF the all-in port-lot price per unit — acquisition + all prep costs + GF margin. Fiducia is the single paying counterparty on asset transactions. The end operator in Venezuela never sees GF's margin.</div></div>
+      <div class="oi"><div class="od db"></div><div class="ot"><strong>Program funder</strong> (DFC, Ex-Im, state grants) pays GF the program administration fee — 8–12% of capital administered. Entirely separate from the truck price; does not inflate asset cost to Fiducia or the end operator.</div></div>
+      <div class="oi"><div class="od dt"></div><div class="ot"><strong>Dieselval Valencia</strong> pays GF a referral/distribution commission on parts flowing to the Cummins fleet. End operator pays Dieselval's normal price — GF earns from Dieselval's margin. This stream is earned by designing the fleet correctly upfront.</div></div>
+    </div>
+    <div>
+      <div class="nbox ng"><strong>The competitive price test:</strong> Chinese new trucks land in Venezuela at $79K–$105K. GF must deliver Fiducia a Cummins-powered US used truck at a port-lot price that — after Fiducia adds shipping and in-country costs — remains competitive or is clearly justified on total cost of ownership. The Cost Stack tab shows exactly where this holds.</div>
+      <div class="nbox nb3" style="margin-top:0;"><strong>Scope boundary — stops at the port lot:</strong> GF delivers a staged, inspected, upfitted, GL-52-documented asset at AIT Mobile or equivalent Gulf RoRo staging lot. Ocean carrier, shipping insurance, and in-country logistics are outside GF's scope. The shipping lane needs an owner in the project group — Knut is the natural candidate.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PEOPLE & ROLES -->
+<div id="s-people" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:18px; line-height:1.5;">Everyone involved — their actual background, their actual role, and how they connect to GreenerFleets. Keeping these distinctions clear is important for how we present to partners.</p>
+
+  <div class="sl">GreenerFleets — the two founders</div>
+  <div class="pcard">
+    <div class="phead">
+      <div class="av av-pb">PB</div>
+      <div style="flex:1;">
+        <div class="pname">Parker Baxter</div>
+        <div class="ptit">Co-founder · GreenerFleets · Fleet sourcing, program design, industry relationships</div>
+        <span class="il lg">GreenerFleets</span>
+      </div>
+    </div>
+    <div class="pbody">Parker is the fleet industry expert and the relationship engine for GreenerFleets. He understands the US commercial truck resale market, knows how fleet disposal cycles work at large operators (Penske, Ryder, JB Hunt), and has the contacts to source assets at scale. He is also the program design lead — drawing on knowledge of existing incentive structures (CalStart, state voucher programs in CA, TX, NJ, NY) to write the rules for the fleet trade-in and incentive framework. Parker was brought into the Venezuela project by Mathew Sanford, which is the relationship that created the GreenerFleets opportunity.</div>
+    <div class="nbox ng" style="margin-top:10px; margin-bottom:0;"><strong>Lane:</strong> Fleet sourcing relationships · program architecture · Cummins-spec enforcement · Dieselval/parts strategy · supplier agreements</div>
+  </div>
+
+  <div class="pcard">
+    <div class="phead">
+      <div class="av av-mm">MM</div>
+      <div style="flex:1;">
+        <div class="pname">Matt Meehan</div>
+        <div class="ptit">Co-founder · GreenerFleets · Equipment finance, deal structure, capital strategy</div>
+        <span class="il lg">GreenerFleets</span>
+      </div>
+    </div>
+    <div class="pbody">Matt brings 20+ years of equipment finance experience. His role is the financial architecture of the operation — structuring the bridge capital that funds procurement before Fiducia pays at the port lot, managing the capital line so the pipeline never stalls, coordinating with Fiducia's capital refresh cycle, and maintaining the holistic view of how the operation makes money at every step. He is the person who looks six months ahead and sees where the business gets jammed before it happens.</div>
+    <div class="nbox ng" style="margin-top:10px; margin-bottom:0;"><strong>Lane:</strong> Bridge capital structure · equipment finance line · Fiducia payment reconciliation · deal margin management · capital timing</div>
+  </div>
+
+  <div class="div"></div>
+  <div class="sl">Project ecosystem partners</div>
+
+  <div class="pcard">
+    <div class="phead">
+      <div class="av av-ms">MS</div>
+      <div style="flex:1;">
+        <div class="pname">Mathew Sanford</div>
+        <div class="ptit">Founder & CTO, Agulus · Technology partner · OFAC compliance platform (contracted separately by another project party)</div>
+        <span class="il lp">Ecosystem · tech</span>
+      </div>
+    </div>
+    <div class="pbody">Mathew Sanford is the person who brought Parker into the Venezuela project — the relationship that created GreenerFleets' opportunity. He is Founder and CTO of Agulus, a Greenville, SC-based agribusiness technology company specializing in contract management software, commodity logistics platforms, risk visualization, and data integration for agricultural brokers, traders, and resellers. His background is directly applicable to the procurement tracking and agribusiness supply chain side of what GreenerFleets is building. Separately and outside GF's scope, Mathew has been contracted by another party in the larger Venezuela project to build an OFAC compliance technology platform containing a large foreign affairs database relevant to GL-52 and sanctions screening. The full scope of that contract is not within GF's visibility, but the relationship means GF can align its transaction workflow to interface with that infrastructure rather than build its own.</div>
+    <div class="nbox np" style="margin-top:10px; margin-bottom:0;"><strong>How this benefits GF:</strong> Parker's proximity to Sanford means GF is positioned to align its transaction documentation with the OFAC platform being built for the broader project — gaining compliance infrastructure without owning the development cost. His Agulus expertise in agribusiness logistics and contract-to-fulfillment platforms is also directly applicable to GF's procurement pipeline management.</div>
+  </div>
+
+  <div class="pcard">
+    <div class="phead">
+      <div class="av av-kn">KN</div>
+      <div style="flex:1;">
+        <div class="pname">Knut</div>
+        <div class="ptit">Ex-oil executive · O&G sector relationships · International field project execution</div>
+        <span class="il la">Ecosystem · O&G</span>
+      </div>
+    </div>
+    <div class="pbody">Knut is a former oil industry executive with a track record of executing large-scale international field projects — including deploying 450+ gas capture containers in Saudi Arabia. He is connected across the O&G sector and brings the relationships that open doors to the end customers Fiducia serves. His most strategically important near-term contribution is access to Shell Venezuela, currently the only major O&G operator committed to Venezuelan operations. A direct GF relationship with Shell built through Knut creates a demand anchor that does not depend entirely on Fiducia as intermediary. His international logistics experience also makes him the natural candidate to own the shipping lane conversation — who books the vessel, who insures the crossing, who handles Venezuelan port clearance.</div>
+    <div class="nbox na" style="margin-top:10px; margin-bottom:0;"><strong>How this benefits GF:</strong> O&G end-customer demand validation · Shell Venezuela as anchor buyer · shipping lane ownership candidate · potential field equipment adjacency</div>
+  </div>
+
+  <div class="pcard">
+    <div class="phead">
+      <div class="av av-mk">MK</div>
+      <div style="flex:1;">
+        <div class="pname">Mike (+ nonprofit network)</div>
+        <div class="ptit">Nonprofit / government contracts · USIP-adjacent network · Policy access</div>
+        <span class="il lt">Ecosystem · gov</span>
+      </div>
+    </div>
+    <div class="pbody">Mike runs a nonprofit that has obtained government contracts through USIP (US Institute of Peace) — an agency significantly reduced under the current administration. His network includes contacts who remain active in the current administration's foreign policy apparatus, positioned at the intersection of Venezuela policy and trade. This is the fastest available pathway to DFC concept paper support, Ex-Im Bank engagement, and any future Trucks for Trade Act push. Mike does not need to be inside the GF transaction — his value is policy access and government contract credibility that supports the program administration revenue stream.</div>
+    <div class="nbox nt" style="margin-top:10px; margin-bottom:0;"><strong>How this benefits GF:</strong> DFC / Ex-Im access · government program funding pathways · Trucks for Trade Act credibility · potential SAM.gov contract vehicle for program administration</div>
+  </div>
+
+  <div class="pcard">
+    <div class="phead">
+      <div class="av av-fc">FC</div>
+      <div style="flex:1;">
+        <div class="pname">Fiducia Capital — Diego Terrero & Roberto</div>
+        <div class="ptit">Venezuelan capital firm · Asset financing for O&G, mining, agribusiness · Caracas</div>
+        <span class="il lb">Capital partner</span>
+      </div>
+    </div>
+    <div class="pbody">Fiducia Capital is the buyer and in-country distribution engine for this project. Diego Terrero and Roberto are the principals. Fiducia currently finances light-duty vehicles, passenger cars, and sprinter vans for Venezuelan operators — expanding into commercial trucking is the core reason this project exists. They have existing end-customer relationships in mines, oil, and food — the same sectors the O&G and agribusiness spec sheets were written for. Their model is equipment lending: take the asset onto their books, finance it to a Venezuelan operator, sell the loan to refresh capital, and cycle again. GF feeds Fiducia's pipeline with correctly specified, Cummins-standardized assets. Average Venezuelan asset age is 23–27 years — the demand for refresh is real and documented.</div>
+    <div class="nbox nb3" style="margin-top:10px; margin-bottom:0;"><strong>The ask to Fiducia:</strong> Confirmed demand list by asset class · per-tranche escrow or LOC structure · minimum 500-unit commitment in Year 1</div>
+  </div>
+</div>
+
+<!-- COST STACK -->
+<div id="s-coststack" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:16px; line-height:1.5;">The full per-unit cost stack by category — what GF spends, what it charges Fiducia, and why each margin is defensible against Chinese alternatives.</p>
+  <div class="nbox na">The formula is the same for every unit: <strong>Acquisition + transport to yard + inspection + upfit/telematics + AIT staging fee + insurance/holding + GL-52 legal doc + finance cost (45-day float) = total landed cost to port lot.</strong> GF margin sits on top. Fiducia buy price = total landed cost + GF margin.</div>
+
+  <div class="cat-tabs" id="cat-tabs">
+    <button class="nb2 on" onclick="showCat('c1')">Cat 1 · Light pickup</button>
+    <button class="nb2" onclick="showCat('c2')">Cat 2 · Med O&G 4x4</button>
+    <button class="nb2" onclick="showCat('c3')">Cat 3 · Agri medium</button>
+    <button class="nb2" onclick="showCat('c4')">Cat 4 · Agri heavy</button>
+    <button class="nb2" onclick="showCat('c5')">Cat 5 · Class 8</button>
+  </div>
+
+  <div id="cat-c1">
+    <div class="nbox ng" style="margin-bottom:10px;"><strong>Cat 1 · Light duty O&G pickup</strong> — Ram 2500/3500 Cummins 6.7L 4x4, 2017–2022. Tightest margin — flat fee protects against % compression. Chinese alternatives ($25K–$41K new) are significantly cheaper on sticker. TCO narrative and Cummins 6.7L Dieselval parts support are essential to justify the premium.</div>
+    <table class="tbl"><thead><tr><th style="width:55%;">Cost line</th><th style="width:22%;">Amount</th><th style="width:23%;">Note</th></tr></thead><tbody>
+      <tr class="sr"><td>Acquisition price (Cummins 6.7L used)</td><td>$32,000</td><td>GF pays seller</td></tr>
+      <tr class="sr"><td>Transport to upfit/staging yard</td><td>$600</td><td>Driveaway or flatbed</td></tr>
+      <tr class="sr"><td>Pre-purchase inspection</td><td>$350</td><td>3rd party mechanic</td></tr>
+      <tr class="sr"><td>Upfit — telematics, spec compliance</td><td>$1,200</td><td>GF pays upfit shop</td></tr>
+      <tr class="sr"><td>AIT Mobile staging fee (~30 days)</td><td>$450</td><td>~$15/day/unit</td></tr>
+      <tr class="sr"><td>Insurance while in GF possession</td><td>$180</td><td>45-day window</td></tr>
+      <tr class="sr"><td>GL-52 export doc / legal review</td><td>$300</td><td>Scales with volume</td></tr>
+      <tr class="sr"><td>Finance cost (45-day float @ 9% annual)</td><td>$360</td><td>GF pays on acquisition line</td></tr>
+      <tr class="tr"><td>Total landed cost to port lot</td><td>$35,440</td><td>GF's all-in cost</td></tr>
+      <tr class="sr"><td>GF margin — flat fee on Cat 1</td><td>$2,500</td><td>7% effective; flat fee protects margin</td></tr>
+      <tr class="tot"><td>Fiducia buy price at port lot</td><td>$37,940</td><td>Fiducia pays GF here</td></tr>
+      <tr class="sr"><td>Chinese equivalent (Venezuela)</td><td>$25K–$41K new</td><td>Great Wall Poer / Foton Tunland</td></tr>
+      <tr class="sr"><td>Competitive position</td><td>Tight</td><td>TCO story essential — Cummins parts, 8–12yr life, manual trans</td></tr>
+    </tbody></table>
+  </div>
+
+  <div id="cat-c2" style="display:none;">
+    <div class="nbox ng" style="margin-bottom:10px;"><strong>Cat 2 · Medium duty O&G 4x4</strong> — International CV515 B6.7 or Freightliner M2 106 B6.7, true 4x4. No Chinese equivalent in this spec. GF has full pricing power — there is no competitive alternative for a purpose-built O&G 4x4 service truck in Venezuela.</div>
+    <table class="tbl"><thead><tr><th style="width:55%;">Cost line</th><th style="width:22%;">Amount</th><th style="width:23%;">Note</th></tr></thead><tbody>
+      <tr class="sr"><td>Acquisition price (Cummins B6.7 4x4)</td><td>$52,000</td><td>GF pays seller</td></tr>
+      <tr class="sr"><td>Transport to upfit/staging yard</td><td>$800</td><td>GF pays</td></tr>
+      <tr class="sr"><td>Pre-purchase inspection</td><td>$500</td><td>More complex unit</td></tr>
+      <tr class="sr"><td>Upfit — telematics, O&G spec compliance</td><td>$2,200</td><td>Bull bar, skid plates, VHF provisions</td></tr>
+      <tr class="sr"><td>AIT Mobile staging fee (~35 days)</td><td>$700</td><td>High/heavy rate</td></tr>
+      <tr class="sr"><td>Insurance while in GF possession</td><td>$280</td><td>GF pays</td></tr>
+      <tr class="sr"><td>GL-52 export doc / legal review</td><td>$300</td><td>GF pays counsel</td></tr>
+      <tr class="sr"><td>Finance cost (45-day float @ 9%)</td><td>$585</td><td>GF pays lender</td></tr>
+      <tr class="tr"><td>Total landed cost to port lot</td><td>$57,365</td><td>GF's all-in cost</td></tr>
+      <tr class="sr"><td>GF margin (8% on acquisition)</td><td>$4,160</td><td>Strong — no Chinese 4x4 competitor</td></tr>
+      <tr class="tot"><td>Fiducia buy price at port lot</td><td>$61,525</td><td>Fiducia pays GF here</td></tr>
+      <tr class="sr"><td>Chinese equivalent</td><td>None</td><td>No Chinese 4x4 med-duty O&G in market</td></tr>
+      <tr class="sr"><td>Competitive position</td><td>Dominant</td><td>No direct competitor exists</td></tr>
+    </tbody></table>
+  </div>
+
+  <div id="cat-c3" style="display:none;">
+    <div class="nbox ng" style="margin-bottom:10px;"><strong>Cat 3 · Agri medium duty</strong> — Hino L6 with Cummins B6.7 (preferred for Dieselval parts) or Isuzu NPR/NRR. High volume category. Chinese competitors present (JAC Búfalo, Foton Aumark) but Cummins B6.7 Dieselval support is decisive for operators running remote agri routes.</div>
+    <table class="tbl"><thead><tr><th style="width:55%;">Cost line</th><th style="width:22%;">Amount</th><th style="width:23%;">Note</th></tr></thead><tbody>
+      <tr class="sr"><td>Acquisition price (Cummins B6.7 med duty)</td><td>$42,000</td><td>GF pays seller</td></tr>
+      <tr class="sr"><td>Transport to upfit/staging yard</td><td>$750</td><td>GF pays</td></tr>
+      <tr class="sr"><td>Pre-purchase inspection</td><td>$400</td><td>GF pays</td></tr>
+      <tr class="sr"><td>Upfit — telematics, reefer check if applicable</td><td>$1,800</td><td>Reefer units add ~$800</td></tr>
+      <tr class="sr"><td>AIT Mobile staging fee (~30 days)</td><td>$500</td><td>GF pays AIT</td></tr>
+      <tr class="sr"><td>Insurance while in GF possession</td><td>$220</td><td>GF pays</td></tr>
+      <tr class="sr"><td>GL-52 export doc / legal review</td><td>$300</td><td>GF pays counsel</td></tr>
+      <tr class="sr"><td>Finance cost (45-day float @ 9%)</td><td>$473</td><td>GF pays lender</td></tr>
+      <tr class="tr"><td>Total landed cost to port lot</td><td>$46,443</td><td>GF's all-in cost</td></tr>
+      <tr class="sr"><td>GF margin (8% on acquisition)</td><td>$3,360</td><td>Moderate — Chinese competition present</td></tr>
+      <tr class="tot"><td>Fiducia buy price at port lot</td><td>$49,803</td><td>Fiducia pays GF here</td></tr>
+      <tr class="sr"><td>Chinese equivalent (Venezuela)</td><td>$45K–$55K new</td><td>JAC Búfalo, Foton Aumark</td></tr>
+      <tr class="sr"><td>Competitive position</td><td>Competitive</td><td>Slight premium justified by Cummins B6.7 parts</td></tr>
+    </tbody></table>
+  </div>
+
+  <div id="cat-c4" style="display:none;">
+    <div class="nbox ng" style="margin-bottom:10px;"><strong>Cat 4 · Agri heavy straight truck</strong> — Freightliner M2 112 Cummins L9 or International 4300/4400 Cummins. Solid margin. Chinese competitors (JAC HFC1254, Dongfeng VR270) close on price but lose on parts availability and 400–700K mile lifetime advantage.</div>
+    <table class="tbl"><thead><tr><th style="width:55%;">Cost line</th><th style="width:22%;">Amount</th><th style="width:23%;">Note</th></tr></thead><tbody>
+      <tr class="sr"><td>Acquisition price (Cummins L9 heavy straight)</td><td>$62,000</td><td>GF pays seller</td></tr>
+      <tr class="sr"><td>Transport to upfit/staging yard</td><td>$900</td><td>GF pays</td></tr>
+      <tr class="sr"><td>Pre-purchase inspection</td><td>$600</td><td>Heavier unit, more inspection time</td></tr>
+      <tr class="sr"><td>Upfit — telematics, dry/reefer spec</td><td>$2,000</td><td>GF pays</td></tr>
+      <tr class="sr"><td>AIT Mobile staging fee (~35 days)</td><td>$700</td><td>High/heavy rate</td></tr>
+      <tr class="sr"><td>Insurance while in GF possession</td><td>$320</td><td>GF pays</td></tr>
+      <tr class="sr"><td>GL-52 export doc / legal review</td><td>$300</td><td>GF pays counsel</td></tr>
+      <tr class="sr"><td>Finance cost (45-day float @ 9%)</td><td>$698</td><td>GF pays lender</td></tr>
+      <tr class="tr"><td>Total landed cost to port lot</td><td>$67,518</td><td>GF's all-in cost</td></tr>
+      <tr class="sr"><td>GF margin (8% on acquisition)</td><td>$4,960</td><td>Strong — US heavy straight outperforms</td></tr>
+      <tr class="tot"><td>Fiducia buy price at port lot</td><td>$72,478</td><td>Fiducia pays GF here</td></tr>
+      <tr class="sr"><td>Chinese equivalent (Venezuela)</td><td>$50K–$75K new</td><td>JAC HFC1254, Dongfeng VR270</td></tr>
+      <tr class="sr"><td>Competitive position</td><td>Strong</td><td>Price competitive + 400–700K mi lifetime advantage</td></tr>
+    </tbody></table>
+  </div>
+
+  <div id="cat-c5" style="display:none;">
+    <div class="nbox ng" style="margin-bottom:10px;"><strong>Cat 5 · Class 8 tractor</strong> — Kenworth T680 or Peterbilt 579 Cummins X15, 250–450K mi. Best margin category. GF's port-lot price lands at or below Chinese new sticker — with 400–700K miles of remaining Venezuela-adjusted service life and Dieselval X15 coverage.</div>
+    <table class="tbl"><thead><tr><th style="width:55%;">Cost line</th><th style="width:22%;">Amount</th><th style="width:23%;">Note</th></tr></thead><tbody>
+      <tr class="sr"><td>Acquisition price (Cummins X15, Class 8)</td><td>$72,000</td><td>GF pays seller</td></tr>
+      <tr class="sr"><td>Transport to upfit/staging yard</td><td>$1,100</td><td>Driveaway or flatbed</td></tr>
+      <tr class="sr"><td>Pre-purchase inspection</td><td>$750</td><td>PACCAR specialist preferred</td></tr>
+      <tr class="sr"><td>Upfit — telematics, O&G spec if applicable</td><td>$1,800</td><td>GF pays</td></tr>
+      <tr class="sr"><td>AIT Mobile staging fee (~40 days)</td><td>$900</td><td>High/heavy, longer hold</td></tr>
+      <tr class="sr"><td>Insurance while in GF possession</td><td>$390</td><td>GF pays</td></tr>
+      <tr class="sr"><td>GL-52 export doc / legal review</td><td>$300</td><td>GF pays counsel</td></tr>
+      <tr class="sr"><td>Finance cost (45-day float @ 9%)</td><td>$810</td><td>GF pays lender</td></tr>
+      <tr class="tr"><td>Total landed cost to port lot</td><td>$78,050</td><td>GF's all-in cost</td></tr>
+      <tr class="sr"><td>GF margin (8% on acquisition)</td><td>$5,760</td><td>Best category — Cummins X15 dominant</td></tr>
+      <tr class="tot"><td>Fiducia buy price at port lot</td><td>$83,810</td><td>Fiducia pays GF here</td></tr>
+      <tr class="sr"><td>Chinese equivalent (Venezuela)</td><td>$79K–$105K new</td><td>Sinotruk T7H, Foton GTL, JAC Chuto</td></tr>
+      <tr class="sr"><td>Competitive position</td><td>Very strong</td><td>At or below Chinese new — with remaining life advantage</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="div"></div>
+  <div class="sl">Blended margin summary — all categories</div>
+  <table class="tbl"><thead><tr><th style="width:30%;">Category</th><th style="width:13%;">Units</th><th style="width:18%;">GF margin/unit</th><th style="width:18%;">Total margin</th><th style="width:21%;">vs Chinese</th></tr></thead><tbody>
+    <tr><td>Cat 1 · Light pickup</td><td>780</td><td>$2,500</td><td>$1.95M</td><td>Tight — TCO story required</td></tr>
+    <tr><td>Cat 2 · Med O&G 4x4</td><td>420</td><td>$4,160</td><td>$1.75M</td><td>Dominant — no competitor</td></tr>
+    <tr><td>Cat 3 · Agri medium</td><td>870</td><td>$3,360</td><td>$2.92M</td><td>Competitive — slight premium</td></tr>
+    <tr><td>Cat 4 · Agri heavy</td><td>620</td><td>$4,960</td><td>$3.08M</td><td>Strong — lifetime advantage</td></tr>
+    <tr><td>Cat 5 · Class 8</td><td>430</td><td>$5,760</td><td>$2.48M</td><td>Very strong — at/below Chinese new</td></tr>
+    <tr class="tr"><td>Total brokerage margin</td><td>3,120</td><td>$3,900 avg</td><td>$12.17M</td><td>48-month cumulative</td></tr>
+  </tbody></table>
+  <div class="nbox na" style="margin-top:10px;">$12.17M over 48 months on $237M in assets = 5.1% blended effective margin. Compressed but real and defensible. The parts tail and program admin fee are where GF builds total return above asset margin alone.</div>
+</div>
+
+<!-- CAPITAL & FLOAT -->
+<div id="s-capital" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:16px;">The 45-day float is the single most important operational constraint. This tab models the capital required at each ramp stage and the options to fund it.</p>
+
+  <div class="sl">Revolving float requirement by ramp stage</div>
+  <table class="tbl"><thead><tr><th style="width:26%;">Stage</th><th style="width:18%;">Units/month</th><th style="width:18%;">Avg cost/unit</th><th style="width:20%;">45-day exposure</th><th style="width:18%;">Line needed</th></tr></thead><tbody>
+    <tr><td>Pilot (mo 1–6)</td><td>10–15</td><td>$60K blended</td><td>$900K–$1.35M</td><td>$1.5M</td></tr>
+    <tr><td>Early ramp (mo 7–18)</td><td>30–50</td><td>$70K blended</td><td>$3.15M–$5.25M</td><td>$6M</td></tr>
+    <tr><td>Steady state (mo 19–36)</td><td>60–80</td><td>$76K blended</td><td>$6.84M–$9.12M</td><td>$10M</td></tr>
+    <tr><td>Mature (mo 37–48)</td><td>80–100</td><td>$76K blended</td><td>$9.12M–$11.4M</td><td>$12M</td></tr>
+  </tbody></table>
+  <div class="nbox na" style="margin-top:10px; margin-bottom:20px;">The float is the cash GF has deployed paying sellers before Fiducia pays at the port lot. This is a dedicated revolving asset acquisition line — not operating capital. It must be established and sized before each ramp increase. Matt Meehan's equipment finance background is the primary asset for structuring this correctly.</div>
+
+  <div class="sl">Capital structure options — ranked by preference</div>
+  <div class="port-card">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;"><span class="il lg">Option A · Best</span><span style="font-size:14px; font-weight:500;">Fiducia pre-funding escrow per confirmed tranche</span></div>
+    <div class="oi"><div class="od dg"></div><div class="ot">Fiducia confirms a tranche (e.g. 50 units by spec), puts funds in escrow, GF draws per unit as it stages at AIT. Float exposure drops to near zero — GF is buying on Fiducia's committed capital.</div></div>
+    <div class="oi"><div class="od dg"></div><div class="ot">Pilot tranche (10–20 units) establishes the workflow template. Once proven, per-tranche escrow becomes the permanent standard structure.</div></div>
+    <div class="oi"><div class="od da"></div><div class="ot">Counter to Fiducia hesitation: FOB handoff means they own the asset the moment it stages at AIT — the escrow is timing, not incremental exposure.</div></div>
+  </div>
+  <div class="port-card">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;"><span class="il lb">Option B · Preferred fallback</span><span style="font-size:14px; font-weight:500;">Equipment finance line — purchase-for-export basis</span></div>
+    <div class="oi"><div class="od db"></div><div class="ot">Matt Meehan structures a revolving line with a specialty lender — purchase-for-export, no title/registration required. Lender advances against confirmed Fiducia purchase orders or letters of credit.</div></div>
+    <div class="oi"><div class="od db"></div><div class="ot">Start at $1.5M for pilot, negotiate increases at each ramp stage tied to Fiducia's confirmed demand. Finance cost ($360–$810/unit) is built into the per-unit cost stack and recovered in GF's price to Fiducia.</div></div>
+  </div>
+  <div class="port-card">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;"><span class="il lp">Option C · Future state</span><span style="font-size:14px; font-weight:500;">DFC or Ex-Im Bank credit facility</span></div>
+    <div class="oi"><div class="od dp"></div><div class="ot">Once Year 1 transactions are documented, GF applies for a DFC or Ex-Im facility. Government-backed below-prime lending reduces finance cost per unit by 2–3 percentage points — material at $10M+ revolving.</div></div>
+    <div class="oi"><div class="od dp"></div><div class="ot">Mike's government network and Sanford's OFAC compliance documentation are the inputs to this application. 12–18 months to establish. Phase 2–3 capital, not Phase 1.</div></div>
+  </div>
+
+  <div class="div"></div>
+  <div class="sl">Full cost stack GF must fund before Fiducia pays</div>
+  <div class="two">
+    <div>
+      <div class="ogt">Direct acquisition costs (per unit)</div>
+      <div class="oi"><div class="od da"></div><div class="ot">Purchase price — wired to seller at sale</div><div class="oc">$32K–$72K</div></div>
+      <div class="oi"><div class="od da"></div><div class="ot">Transport — seller to upfit/staging yard</div><div class="oc">$600–$1,100</div></div>
+      <div class="oi"><div class="od da"></div><div class="ot">Pre-purchase inspection — 3rd party</div><div class="oc">$350–$750</div></div>
+    </div>
+    <div>
+      <div class="ogt">Preparation & holding costs (per unit)</div>
+      <div class="oi"><div class="od da"></div><div class="ot">Upfit — telematics, spec compliance</div><div class="oc">$1,200–$2,200</div></div>
+      <div class="oi"><div class="od da"></div><div class="ot">AIT staging fee — per day while awaiting vessel</div><div class="oc">$450–$900</div></div>
+      <div class="oi"><div class="od da"></div><div class="ot">Insurance — while unit is in GF's possession</div><div class="oc">$180–$390</div></div>
+      <div class="oi"><div class="od da"></div><div class="ot">GL-52 export documentation and legal review</div><div class="oc">$300 flat</div></div>
+      <div class="oi"><div class="od da"></div><div class="ot">Finance cost — 45-day float @ 9% annual</div><div class="oc">$360–$810</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRO FORMA -->
+<div id="s-proforma" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:16px;">48-month pro forma — $250M asset target, conservative brokerage margin, category mix applied. Revenue lines modeled separately with honest assumptions about what is base case vs upside.</p>
+  <div class="nbox na"><strong>Important assumption note:</strong> Asset brokerage margin is base case — it exists from the first transaction. Program admin fee is conditional on a funded government program (DFC, Ex-Im, state grant) and is modeled as upside only — never as a base assumption. Parts tail begins small and compounds as the deployed Cummins fleet grows.</div>
+
+  <div class="mrow">
+    <div class="mc"><div class="ml">Base brokerage (48 mo)</div><div class="mv">$12.2M</div><div class="ms">$3,900 avg × 3,120 units</div></div>
+    <div class="mc"><div class="ml">Parts tail (48 mo)</div><div class="mv">$3.5M</div><div class="ms">5% Dieselval commission · growing</div></div>
+    <div class="mc"><div class="ml">Program admin (upside only)</div><div class="mv">$8–15M</div><div class="ms">conditional on funded program · Yr 2+</div></div>
+    <div class="mc"><div class="ml">Base case 48-mo total</div><div class="mv">$15.7M</div><div class="ms">brokerage + parts only</div></div>
+  </div>
+
+  <div class="sl">Annual view — base case and upside separated</div>
+  <table class="tbl"><thead><tr><th style="width:36%;">Line item</th><th style="width:16%;">Year 1</th><th style="width:16%;">Year 2</th><th style="width:16%;">Year 3</th><th style="width:16%;">Year 4</th></tr></thead><tbody>
+    <tr class="hr"><td colspan="5">Volume (units delivered to port lot)</td></tr>
+    <tr class="sr"><td>Cat 1 light pickup (25%)</td><td>58</td><td>156</td><td>234</td><td>332</td></tr>
+    <tr class="sr"><td>Cat 2 med O&G 4x4 (13%)</td><td>30</td><td>82</td><td>126</td><td>182</td></tr>
+    <tr class="sr"><td>Cat 3 agri medium (28%)</td><td>66</td><td>180</td><td>270</td><td>354</td></tr>
+    <tr class="sr"><td>Cat 4 agri heavy (20%)</td><td>48</td><td>128</td><td>192</td><td>252</td></tr>
+    <tr class="sr"><td>Cat 5 Class 8 (14%)</td><td>34</td><td>90</td><td>134</td><td>172</td></tr>
+    <tr class="tr"><td>Total units delivered</td><td>236</td><td>636</td><td>956</td><td>1,292</td></tr>
+    <tr class="hr"><td colspan="5">Base case revenue</td></tr>
+    <tr class="sr"><td>Asset brokerage margin</td><td>$0.92M</td><td>$2.48M</td><td>$3.73M</td><td>$5.04M</td></tr>
+    <tr class="sr"><td>Parts tail commission (5% · growing fleet)</td><td>$0.09M</td><td>$0.51M</td><td>$1.15M</td><td>$1.75M</td></tr>
+    <tr class="tr"><td>Base case revenue</td><td>$1.01M</td><td>$2.99M</td><td>$4.88M</td><td>$6.79M</td></tr>
+    <tr class="hr"><td colspan="5">Upside revenue — conditional on funded government program</td></tr>
+    <tr class="sr"><td>Program admin fee (10% · if DFC/Ex-Im secured)</td><td>—</td><td>$1.50M</td><td>$4.00M</td><td>$6.00M</td></tr>
+    <tr class="up"><td>Total with program admin (upside)</td><td>$1.01M</td><td>$4.49M</td><td>$8.88M</td><td>$12.79M</td></tr>
+    <tr class="hr"><td colspan="5">Operating costs (GF entity costs only — per-unit costs recovered from Fiducia)</td></tr>
+    <tr class="sr"><td>Team (salaries + contract)</td><td>$0.28M</td><td>$0.60M</td><td>$0.95M</td><td>$1.20M</td></tr>
+    <tr class="sr"><td>Legal + GL-52 compliance review</td><td>$0.07M</td><td>$0.19M</td><td>$0.29M</td><td>$0.39M</td></tr>
+    <tr class="sr"><td>Tech + admin + GF entity insurance</td><td>$0.06M</td><td>$0.10M</td><td>$0.14M</td><td>$0.18M</td></tr>
+    <tr class="sr"><td>Loss provision (2% of asset value transacted)</td><td>$0.09M</td><td>$0.25M</td><td>$0.38M</td><td>$0.50M</td></tr>
+    <tr class="tr"><td>Total OpEx</td><td>$0.50M</td><td>$1.14M</td><td>$1.76M</td><td>$2.27M</td></tr>
+    <tr class="tot"><td>Base case operating profit</td><td>$0.51M</td><td>$1.85M</td><td>$3.12M</td><td>$4.52M</td></tr>
+    <tr class="up"><td>Upside operating profit (with program admin)</td><td>$0.51M</td><td>$3.35M</td><td>$7.12M</td><td>$10.52M</td></tr>
+  </tbody></table>
+  <div class="nbox na" style="margin-top:10px;">Year 1 profit is modest by design — the pilot ramp is intentionally slow. The business becomes meaningfully profitable in Year 2 on base case alone. AIT staging fees and all per-unit preparation costs are inside the cost stack recovered from Fiducia — they do not appear as GF operating costs here.</div>
+
+  <div class="div"></div>
+  <div class="sl">48-month cumulative</div>
+  <div class="mrow">
+    <div class="mc"><div class="ml">Base case revenue</div><div class="mv">$15.7M</div><div class="ms">brokerage + parts tail only</div></div>
+    <div class="mc"><div class="ml">Upside revenue</div><div class="mv">$27.2M</div><div class="ms">+ program admin if funded</div></div>
+    <div class="mc"><div class="ml">Cumulative OpEx</div><div class="mv">$5.7M</div><div class="ms">GF entity costs only</div></div>
+    <div class="mc"><div class="ml">Base case profit</div><div class="mv">$10.0M</div><div class="ms">64% blended margin</div></div>
+  </div>
+</div>
+
+<!-- OPERATIONS -->
+<div id="s-ops" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:16px;">What needs to be standing before volume arrives — phase by phase. Click each phase to expand.</p>
+
+  <div class="ph-block">
+    <div class="ph" onclick="tp(this,'pp1')"><span class="pbadge b1">Phase 1 · Mo 1–6</span><span class="ptitle">Pilot — prove the pipeline</span><span class="pmeta">10–15 units/mo</span><span class="arrow">▶</span></div>
+    <div id="pp1" class="pb">
+      <div class="og">
+        <div>
+          <div class="ogt">People</div>
+          <div class="oi"><div class="od db"></div><div class="ot">Parker — fleet sourcing, Cummins spec, Fiducia demand list intake</div><div class="oc">Founder</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Matt Meehan — deal structure, acquisition line, transaction economics</div><div class="oc">Founder</div></div>
+          <div class="oi"><div class="od da"></div><div class="ot">1 contract sourcing coordinator — unit identification, inspection logistics</div><div class="oc">~$4K/mo</div></div>
+          <div class="oi"><div class="od da"></div><div class="ot">Export legal counsel — GL-52 review, export doc sign-off per unit</div><div class="oc">~$300/unit</div></div>
+        </div>
+        <div>
+          <div class="ogt">Structure & licensing</div>
+          <div class="oi"><div class="od dg"></div><div class="ot">SC wholesale dealer license</div><div class="oc">$50 + $50K bond</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Entity formation — LLC/C-corp, export-purpose provisions</div><div class="oc">~$2K</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Per-tranche escrow account for Fiducia payments</div><div class="oc">Bank setup</div></div>
+          <div class="oi"><div class="od dp"></div><div class="ot">Align transaction data outputs with Sanford's OFAC platform as it develops — ensure GL-52 doc format is compatible with his system from day one</div></div>
+        </div>
+        <div>
+          <div class="ogt">Procurement — Cummins first</div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Get confirmed demand list from Fiducia by asset class and spec before sourcing begins</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Source 10–15 Cummins-only units from Penske/MHC/Arrow. Cummins-only rule enforced from unit 1.</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Confirm Dieselval Valencia parts availability for each pilot unit's engine model before purchase</div></div>
+        </div>
+        <div>
+          <div class="ogt">Port & capital</div>
+          <div class="oi"><div class="od dt"></div><div class="ot">Open commercial relationship with AIT, Port of Mobile — staging agreement, VPC access, high/heavy rate. First call: Leonardo Montenegro, COO.</div></div>
+          <div class="oi"><div class="od dt"></div><div class="ot">Identify secondary Gulf terminal for TX-sourced units — Galveston Pier 39 or Port Freeport</div></div>
+          <div class="oi"><div class="od da"></div><div class="ot">$1.5M acquisition line established before first unit purchased</div><div class="oc">Priority</div></div>
+        </div>
+      </div>
+      <div class="nbox ng" style="margin-top:14px;"><strong>Phase 1 milestone:</strong> One fully documented transaction — unit purchased, prepped, staged at AIT, GL-52 docs complete, Fiducia pays at port lot. This single transaction is the template for every subsequent tranche and the foundation for lender underwriting of the equipment finance line.</div>
+    </div>
+  </div>
+
+  <div class="ph-block">
+    <div class="ph" onclick="tp(this,'pp2')"><span class="pbadge b2">Phase 2 · Mo 7–24</span><span class="ptitle">Program launch & steady state</span><span class="pmeta">30–65 units/mo</span><span class="arrow">▶</span></div>
+    <div id="pp2" class="pb">
+      <div class="og">
+        <div>
+          <div class="ogt">Additional people</div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Fleet procurement manager — full-time Cummins-platform sourcing</div><div class="oc">~$80K/yr</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Logistics coordinator — AIT relationship, upfit scheduling, doc flow</div><div class="oc">~$60K/yr</div></div>
+          <div class="oi"><div class="od db"></div><div class="ot">Program administrator — incentive program outreach, fleet qualification</div><div class="oc">~$65K/yr</div></div>
+          <div class="oi"><div class="od db"></div><div class="ot">Finance coordinator — capital line management, Fiducia reconciliation</div><div class="oc">~$60K/yr</div></div>
+        </div>
+        <div>
+          <div class="ogt">OFAC & compliance</div>
+          <div class="oi"><div class="od dp"></div><div class="ot">As Sanford's OFAC platform matures, formalize the data interface — GF transaction records flow into his system for SDN screening and audit trail generation</div></div>
+          <div class="oi"><div class="od dp"></div><div class="ot">Audit trail outputs used for DFC concept paper — Mike's network places these with the right administration contacts</div></div>
+          <div class="oi"><div class="od dp"></div><div class="ot">Begin DFC concept paper preparation — 12–18 months to facility approval</div></div>
+        </div>
+        <div>
+          <div class="ogt">Program & procurement</div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Draft fleet incentive program rules — Cummins eligibility baked into qualification criteria</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Preferred supply agreements with 2–3 large US fleets — Cummins spec in contract terms</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Build Cummins-only fleet ranking database — model, mileage, price, availability</div></div>
+          <div class="oi"><div class="od dt"></div><div class="ot">Knut activates Shell Venezuela O&G demand — direct buyer anchor</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Formalize Dieselval Valencia relationship — B6.7, L9, X15 parts pre-position</div></div>
+        </div>
+        <div>
+          <div class="ogt">Capital scale-up</div>
+          <div class="oi"><div class="od da"></div><div class="ot">Increase acquisition line to $6M before Month 7</div></div>
+          <div class="oi"><div class="od da"></div><div class="ot">Negotiate per-tranche escrow as standard Fiducia structure</div></div>
+          <div class="oi"><div class="od dt"></div><div class="ot">Formalize AIT staging volume agreement — unlocks volume pricing</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ph-block">
+    <div class="ph" onclick="tp(this,'pp3')"><span class="pbadge b3">Phase 3 · Mo 25–48</span><span class="ptitle">Full deployment & revenue maturity</span><span class="pmeta">80–100 units/mo</span><span class="arrow">▶</span></div>
+    <div id="pp3" class="pb">
+      <div class="og">
+        <div>
+          <div class="ogt">Team at scale</div>
+          <div class="oi"><div class="od dg"></div><div class="ot">VP Procurement — all Cummins-platform fleet relationships and buying strategy</div><div class="oc">~$120K/yr</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">VP Finance — $10M+ capital line, DFC facility management, Fiducia reconciliation</div><div class="oc">~$120K/yr</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Parts supply manager — Dieselval relationship, Cummins SKU management for 3,000+ unit fleet</div><div class="oc">~$80K/yr</div></div>
+          <div class="oi"><div class="od db"></div><div class="ot">3–4 regional fleet sourcers (TX, SC, Midwest, Southeast)</div><div class="oc">~$65K/yr ea</div></div>
+        </div>
+        <div>
+          <div class="ogt">Infrastructure at scale</div>
+          <div class="oi"><div class="od da"></div><div class="ot">$12M revolving acquisition line — sized for 100-unit monthly pipeline</div></div>
+          <div class="oi"><div class="od dp"></div><div class="ot">DFC or Ex-Im facility active — below-prime rate, $150–$300 per-unit finance cost reduction</div></div>
+          <div class="oi"><div class="od dt"></div><div class="ot">AIT Mobile — preferred commercial relationship, priority staging, volume pricing formalized</div></div>
+          <div class="oi"><div class="od dt"></div><div class="ot">USDOT-certified export pipeline operator status</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Parts tail fully compounding — 3,000+ Cummins trucks, ~$24M/yr Dieselval demand, GF earning ~$1.2M/yr recurring at 5%</div></div>
+          <div class="oi"><div class="od dg"></div><div class="ot">Explore deeper Venezuela revenue — telematics data product, fleet finance co-investment, additional Fiducia end-sectors</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTS -->
+<div id="s-ports" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:16px;">GF stops at the port lot. These are the relationships that make that stopping point work — and where responsibility passes to others in the project.</p>
+
+  <div class="sl">Primary — AutoMobile International Terminal · Port of Mobile, Alabama</div>
+  <div class="port-card">
+    <div class="port-title">Why AIT Mobile is the right primary relationship</div>
+    <div class="oi"><div class="od dg"></div><div class="ot">7,000 vehicle on-site storage capacity — GF's staging lot is already built. No separate yard lease needed once the relationship is established.</div></div>
+    <div class="oi"><div class="od dg"></div><div class="ot">VPC with 25 workstations and PDI inspection tunnels — GF's final inspection and upfit work happens here. Potentially eliminates a separate upfit yard entirely.</div></div>
+    <div class="oi"><div class="od dg"></div><div class="ot">8,000 sq.m of concrete for high and heavy operations — Class 7 and Class 8 trucks specifically accommodated. AIT has already discussed this capacity with commercial equipment manufacturers.</div></div>
+    <div class="oi"><div class="od dg"></div><div class="ot">VPC can convert to Equipment Processing Centre (EPC) — AIT understands commercial truck processing. GF is not an unusual customer for this facility.</div></div>
+    <div class="oi"><div class="od dt"></div><div class="ot">Connected to five Class 1 rail lines — trucks can be railed into AIT from anywhere in the Southeast as volume scales past 50 units/month.</div></div>
+    <div class="oi"><div class="od dt"></div><div class="ot">Dedicated RoRo berths, 457m length, accommodates any PCTC vessel. $60M joint venture between Alabama State Port Authority and AIT — a serious, permanent facility.</div></div>
+    <div class="nbox nb3" style="margin-top:12px;"><strong>First call:</strong> AIT operations team — Leonardo Montenegro, COO. Commercial account for used commercial truck staging, VPC access, high/heavy processing. Ask for per-unit rate for staging + VPC processing and minimum volume for preferred pricing. The Venezuela fleet program makes this a growing, sticky account.</div>
+  </div>
+
+  <div class="sl">Secondary options — Texas-sourced units</div>
+  <div class="two" style="margin-bottom:16px;">
+    <div class="port-card" style="margin-bottom:0;">
+      <div class="port-title">Galveston Pier 39 — Ports America</div>
+      <div style="font-size:13px; color:var(--text2); line-height:1.5;">RoRo terminal operated by Ports America. Close to Houston truck supply base — units sourced from Texas dealers and auctions can be driven or hauled directly. Ports America handles new and used vehicles, construction and agricultural machinery, and heavy equipment.</div>
+    </div>
+    <div class="port-card" style="margin-bottom:0;">
+      <div class="port-title">Port Freeport / Port Arthur — Ports America</div>
+      <div style="font-size:13px; color:var(--text2); line-height:1.5;">Both are Ports America RoRo operations on the Texas Gulf coast with direct Gulf access and heavy cargo capability. Useful as overflow options when AIT has scheduling constraints, or when Texas-heavy sourcing months make Gulf routing more efficient.</div>
+    </div>
+  </div>
+
+  <div class="sl">The shipping lane — outside GF scope, needs an owner in the project</div>
+  <div class="nbox na">GF delivers a staged, inspected, upfitted, documented asset at the port lot. Ocean carrier selection, vessel booking, shipping insurance, in-country Venezuelan customs, and port reception are outside GF's scope — Parker and Matt Meehan do not have shipping connections. This lane needs to be assigned within the project group. Knut's O&G logistics background and international field project experience make him the natural person to either own this relationship or identify who does. The question to raise with the group: who books the vessel, who insures the crossing, who handles Venezuelan port clearance — and how does that total shipping cost flow through to Fiducia's landed cost calculation?</div>
+</div>
+
+<!-- RISKS -->
+<div id="s-risks" class="sec">
+  <p style="font-size:13px; color:var(--text2); margin-bottom:16px;">Key headwinds — severity rated, hedges specified. All risks identified through development of this model.</p>
+
+  <div class="ri"><div class="rs rh">HIGH</div><div style="flex:1; min-width:0;"><div class="rn">Bridge capital gap — 45-day float at scale</div><div class="rd">At 65 units/month average, GF has $7–9M continuously deployed paying sellers before Fiducia pays at the port lot. Running out of line stalls the pipeline and damages the Fiducia relationship. This risk materializes at Month 7 if the line is not in place beforehand.</div><div class="rhe">Hedge: Matt Meehan establishes the $1.5M acquisition line before the first unit is purchased. Pilot transaction documents the template lenders need. Fiducia per-tranche escrow is negotiated as the permanent solution — it eliminates float risk entirely. Line is sized ahead of each ramp increase, not in response to it.</div></div></div>
+
+  <div class="ri"><div class="rs rh">HIGH</div><div style="flex:1; min-width:0;"><div class="rn">OFAC / GL-52 compliance failure</div><div class="rd">Venezuela remains under US sanctions. One non-compliant transaction — wrong counterparty, missing documentation, wrong end-use certification — stops the entire operation and creates personal founder exposure. Enforcement is active.</div><div class="rhe">Hedge: Export legal counsel on every unit in Phase 1 ($300/unit, built into cost stack). Align GF transaction documentation format with Sanford's OFAC platform as it matures — his foreign affairs database is the compliance infrastructure GF benefits from without building. Never skip legal review to save per-unit cost.</div></div></div>
+
+  <div class="ri"><div class="rs rh">HIGH</div><div style="flex:1; min-width:0;"><div class="rn">Single-buyer concentration — Fiducia Capital</div><div class="rd">If Diego Terrero and Roberto's capital availability stalls, a key end-customer fails, or the relationship deteriorates, GF has no buyer for its pipeline. At $237M over 48 months, Fiducia failure is existential.</div><div class="rhe">Hedge: Knut builds a direct Shell Venezuela relationship — a buyer path that does not route through Fiducia. Per-tranche escrow limits exposure to one batch at a time. Identify a secondary Venezuelan capital firm as backup by Month 18, initially at a 90/10 split.</div></div></div>
+
+  <div class="ri"><div class="rs rm">MED</div><div style="flex:1; min-width:0;"><div class="rn">Cat 1 light duty margin compression</div><div class="rd">At $2,500 flat fee per unit, Cat 1 is the lowest-margin category and most volume-dependent. Chinese alternatives ($25K–$41K new) undercut GF's Fiducia price significantly on sticker. Fiducia may push back or divert Cat 1 demand to Chinese suppliers.</div><div class="rhe">Hedge: Lead every Cat 1 conversation with the Cummins 6.7L Dieselval parts story, 8–12 year Venezuela-adjusted service life, and manual transmission availability. Build a one-page TCO model per unit type. The Chinese sticker advantage disappears at Year 2 when parts cost is factored in.</div></div></div>
+
+  <div class="ri"><div class="rs rm">MED</div><div style="flex:1; min-width:0;"><div class="rn">Chinese competition across all categories</div><div class="rd">Sinotruk, Foton, JAC, and Dongfeng are actively selling new trucks in Venezuela. Without government shipping support, Chinese trucks can appear more affordable on first cost. The Chinese presence is growing — the window to establish US-supply loyalty is not unlimited.</div><div class="rhe">Hedge: Push DFC/Ex-Im pricing support through Mike's government network. In the near term, the Cummins platform story (Dieselval, 55–65% SKU reduction, single fluid spec) is GF's competitive differentiation. Focus Fiducia's early demand on Cat 2 and Cat 5 where GF has no credible Chinese competitor, to establish the US-supply relationship before competing on tighter categories.</div></div></div>
+
+  <div class="ri"><div class="rs rm">MED</div><div style="flex:1; min-width:0;"><div class="rn">Political & policy risk — US and Venezuela</div><div class="rd">A US administration change, tightening of Venezuela sanctions, or Maduro policy shift could suspend or complicate the program. Trucks for Trade Act has no congressional champion yet. GL-52 is granted, not permanent — the license can be modified or revoked.</div><div class="rhe">Hedge: Build the business to work without government shipping support and without Trucks for Trade. Government support is modeled as upside only. Use DFC + Ex-Im as the near-term government pathway (no legislation required). Monitor GL-52 status continuously — legal counsel flags any OFAC policy changes as they occur.</div></div></div>
+
+  <div class="ri"><div class="rs rm">MED</div><div style="flex:1; min-width:0;"><div class="rn">AIT staging cost uncertainty and scheduling risk</div><div class="rd">GF's port-lot model depends on AIT's cooperation on rate, scheduling, and VPC access. If AIT prioritizes OEM volume over GF's smaller used commercial batches, staging delays extend the float window and add holding cost.</div><div class="rhe">Hedge: Establish the AIT relationship in Phase 1 before it's needed at scale. Negotiate a written staging agreement with per-unit rates and scheduling commitments. Identify secondary Texas terminals so AIT knows GF has alternatives — negotiating leverage even as a smaller account.</div></div></div>
+
+  <div class="ri"><div class="rs rm">MED</div><div style="flex:1; min-width:0;"><div class="rn">Ramp pace slower than modeled</div><div class="rd">If Fiducia's loan book builds more slowly than expected, monthly volume could stay at 20–30 units longer — reducing revenue and making the capital line expensive relative to utilization.</div><div class="rhe">Hedge: Phase 1 is intentionally light on fixed cost. Fixed headcount only scales when Fiducia's confirmed demand justifies it. The capital line should be a revolving facility, not a term loan — underutilization does not create a fixed payment problem.</div></div></div>
+
+  <div class="ri"><div class="rs rl">LOW</div><div style="flex:1; min-width:0;"><div class="rn">Non-Cummins units entering the procurement pipeline</div><div class="rd">Price or availability pressure could push a sourcing coordinator toward a non-Cummins unit. Every exception erodes parts standardization and the Dieselval relationship that the parts tail revenue depends on.</div><div class="rhe">Hedge: Cummins-only rule is written into supplier agreements and Fiducia demand specifications as an eligibility requirement, not a preference. Any exception requires founder approval and Dieselval parts confirmation for that specific engine. No exceptions in Phase 1.</div></div></div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>GreenerFleets · Venezuela Fleet Supply Operating Model · v5 · Confidential</span>
+  <span>Prepared April 2026 · For review by Parker Baxter and Matt Meehan</span>
+</div>
+
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('vis'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById('s-' + id).classList.add('vis');
+  event.target.classList.add('on');
+  window.scrollTo(0, 0);
+}
+function showCat(id) {
+  ['c1','c2','c3','c4','c5'].forEach(c => {
+    document.getElementById('cat-' + c).style.display = c === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('#cat-tabs .nb2').forEach(b => b.classList.remove('on'));
+  event.target.classList.add('on');
+}
+function tp(phEl, bodyId) {
+  const body = document.getElementById(bodyId);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  phEl.classList.toggle('open-ph', !isOpen);
+}
+</script>
+</body>
+</html>
